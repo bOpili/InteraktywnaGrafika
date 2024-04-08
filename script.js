@@ -71,28 +71,47 @@ function zmienKontrast(){
 function naSrodek(photo){
     var r = document.querySelector(':root');
     var ae = document.getElementsByClassName("centeredImage");
-    var ae2 = document.getElementsByClassName("photoBack");
     
-    Array.prototype.forEach.call(ae2, function(el) {
-        el.className = "photo";
-    });
-    
-    Array.prototype.forEach.call(ae, function(el) {
-        el.className = "photoBack";
-    });
+    var big = document.getElementById("photoBig");
+    var box = document.getElementById("photoContainer");
 
-    
     photo.className = 'centeredImage';
     
-    var gallery = document.getElementById('gallery');
+    if (ae[0]!=null){
+        
+        var rect = box.getBoundingClientRect();
+        var rectPhoto = ae[0].getBoundingClientRect();
+        
+        var centerX = (rect.right-rect.left)/2;
+        var centerY = (rect.bottom-rect.top)/2;
+        
+        var centerPhotoX = (rectPhoto.right-rectPhoto.left)/2;
+        var centerPhotoY = (rectPhoto.bottom-rectPhoto.top)/2;
+        
+        var offsetX = rect.right-rectPhoto.right-centerX+centerPhotoX;
+        var offsetY = rect.top-rectPhoto.top+centerY-centerPhotoY;
+        
+        var a1 =offsetX.toString()+"px";
+        var a2 = offsetY.toString()+"px";
+        
+        var b1 = ((rect.bottom-rect.top)/(rectPhoto.bottom-rectPhoto.top)*100).toString()+"%";
+        var b2 = ((rect.right-rect.left)/(rectPhoto.right-rectPhoto.left)*100).toString()+"%";
     
-    var photoRect = photo.getBoundingClientRect();
+        r.style.setProperty('--scaleYPhoto', b1);
+        r.style.setProperty('--scaleXPhoto', b2);
+        r.style.setProperty('--offsetX', a1);
+        r.style.setProperty('--offsetY', a2);
+        
+        console.log(b1);
+        console.log(b2);
+        
+        setTimeout(function() {
+            big.hidden = false;
+            big.setAttribute("src",ae[0].getAttribute("src"));
+            photo.className = "photo";
+          }, 1000);
+    }
+
     
-    var rect = gallery.getBoundingClientRect();
-    
-    
-    var oy = rect.bottom - photoRect.bottom;
-    var ox = (rect.right/2) - photo.right;
-    r.style.setProperty('--oy', oy.toString()+'px');
-    r.style.setProperty('--ox', ox.toString()+'px');
+   
 }

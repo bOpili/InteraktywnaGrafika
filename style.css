@@ -58,6 +58,10 @@ padding: 10px;
 	min-height: 1080px;
 }
 
+#photoContainer{
+	height: 50rem;
+}
+
 #left_col {
 	background-color:#38A5CE;
 	display: flex;
@@ -104,7 +108,7 @@ padding: 10px;
 	display: flex;
 	flex-direction: row wrap;
 	justify-content: space-evenly;
-	align-content: flex-start;
+	align-content: space-around;
 	flex-wrap: wrap;
 }
 
@@ -291,36 +295,52 @@ p.p3 {
 
 .photo {
 	z-index: 0;
-	width: 300px;
-	height: 200px;
+	width: 15rem;
+	height: 10rem;
 	margin-bottom: 10px;
+	
+	/* https://aurainweb.pl/5-prostych-efektow-na-obrazkach-z-wykorzystaniem-hover-css/ */
+	
+	/* -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease; */
+	
 }
 .photo:hover {
-	transform: scale(105%) rotate(5deg);
+	animation: rotate 0.5s forwards;
+	/*animation-iteration-count: infinite;*/
+
+	/* https://imagekit.io/blog/creating-css-image-effects/ */
+	
+	/* animation: vibrate 0.5s;
+	animation-iteration-count: infinite; */
+	
+	/* https://aurainweb.pl/5-prostych-efektow-na-obrazkach-z-wykorzystaniem-hover-css/ */
+	
+	/* border-radius: 50%;
+  	-webkit-transform: rotate(360deg);
+     -moz-transform: rotate(360deg);
+       -o-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+          transform: rotate(360deg); */
+	
 }
 
-
-.photoBack{
-	z-index: 2;
-	width: 300px;
-	height: 200px;
-	margin-bottom: 10px;
-	-webkit-animation: backImage 1s linear normal forwards;
-			animation: backImage 1s linear normal forwards;
+#photoBig{
+	width: 100%;
+	height: 100%;
 }
 
-.photoBack:hover {
-	transform: scale(105%) rotate(5deg);
-}
 
  .centeredImage{
-	position: absolute;
 	z-index: 3;
-	width: 300px;
-	height: 200px;
+	width: 15rem;
+	height: 10rem;
 	margin-bottom: 10px;
-	-webkit-animation: centerImage 1s linear normal forwards;
-			animation: centerImage 1s linear normal forwards;
+	-webkit-animation: centerImage 1s linear normal backwards;
+			animation: centerImage 1s linear normal backwards;
 
 	
 }
@@ -349,46 +369,49 @@ p.p3 {
  * ----------------------------------------
  */
  
- @-webkit-keyframes backImage {
-	0% {
-		-webkit-transform: translateY(40vh) scale(200%);
-			  	transform: translateY(40vh) scale(200%);
-	}
-	100% {
-		-webkit-transform: translate(0px,0px) scale(100%) rotate(720deg);
-			  	transform: translate(0px,0px) scale(100%) rotate(720deg);
-	}
-  }
-  @keyframes backImage {
-	0% {
-		-webkit-transform: translateY(40vh) scale(200%);
-			  	transform: translateY(40vh) scale(200%);
-	}
-	100% {
-		-webkit-transform: translate(0px,0px) scale(100%) rotate(720deg);
-			  	transform: translate(0px,0px) scale(100%) rotate(720deg);
-	}
-  }
  
- 
- @-webkit-keyframes centerImage {
-	/* 0% {
-	  -webkit-transform: translate(0px);
-			  transform: translate(0px);
-	} */
-	100% {
-		-webkit-transform: translateY(40vh) scale(200%) rotate(720deg);
-				transform: translateY(40vh) scale(200%) rotate(720deg);
+ @keyframes rotate{
+	100%{
+		transform: scale(105%) rotate(5deg);
 	}
-  }
+ }
+ 
   @keyframes centerImage {
-	/* 0% {
-		-webkit-transform: translate(0px);
-			  transform: translate(0px);
-	} */
+	
 	100% {
-		-webkit-transform: translateY(40vh) scale(200%) rotate(720deg);
-			    transform: translateY(40vh) scale(200%) rotate(720deg);
+		-webkit-transform: translate(var(--offsetX),var(--offsetY)) scale(var(--scaleXPhoto),var(--scaleYPhoto)) rotate(720deg);
+			    transform: translate(var(--offsetX),var(--offsetY)) scale(var(--scaleXPhoto),var(--scaleYPhoto)) rotate(720deg);
+				
 	}
+  }
+  
+  
+  
+  @keyframes vibrate{
+	
+	/* https://imagekit.io/blog/creating-css-image-effects/ */
+	
+	0% { transform: translate(2px,-2px); }
+	10% { transform: translate(-2px,2px); }
+	20% { transform: translate(-2px,-2px); }
+	30% { transform: translate(-2px,2px); }
+	40% { transform: translate(2px,-2px); }
+	50% { transform: translate(-2px,-2px); }
+	60% { transform: translate(2px,-2px); }
+	70% { transform: translate(2px,2px); }
+	80% { transform: translate(2px,-2px); }
+	90% { transform: translate(-2px,2px); }
+	100% { transform: translate(-2px,-2px); }
+  }
+  
+  
+  /* https://codepen.io/nelledejones/pen/gOOPWrK */
+  
+  @keyframes hinge {
+	0% { transform: rotate(0); transform-origin: top left; animation-timing-function: ease-in-out; }  
+	20%, 60% { transform: rotate(80deg); transform-origin: top left; animation-timing-function: ease-in-out; }  
+	40% { transform: rotate(60deg); transform-origin: top left; animation-timing-function: ease-in-out; } 
+	80% { transform: rotate(60deg) translateY(0); opacity: 1; transform-origin: top left; animation-timing-function: ease-in-out; } 
+	100% { transform: translate(var(--offsetX),var(--offsetY)) scale(var(--scaleXPhoto),var(--scaleYPhoto)); }
   }
   
