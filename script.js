@@ -1,9 +1,4 @@
-
-
-
-window.onload = function() {
-    
-    
+function canvas() {
     var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
 
@@ -149,8 +144,184 @@ window.onload = function() {
         context.fill();
         context.stroke();
         context.closePath();
+
     }
+
 }
+
+function canvas2(){
+    //--------------------------------------------------------------------------
+
+    var canvasAnim = document.getElementById("myCanvasAnimation");
+    var context = canvasAnim.getContext("2d");
+
+
+    var rect = {x: 0, y: 0, width: 200, height: 200};
+    var rect2 = {x: rect.width, y: 0, width: 200, height: 200};
+    
+    var cs = {bx: 10, by: 210, sx: 1, sy: -1};
+    var cs2 = {bx: 220, by: 210, sx: 1, sy: -1};
+    
+    var c = 10;
+    
+    var scalex = 10;
+    var scaley = 10;
+    
+    
+    
+    // transformacja układu wsp. pukt 0,0 przesuwa się w dół, skala powoduje rysowanie od dołu do góry
+    context.save();
+    context.translate(cs.bx, cs.by);
+    context.scale(cs.sx, cs.sy);
+    //rysowanie osi
+    context.beginPath();
+    context.lineWidth = 2;
+    context.strokeStyle = "black";
+
+    //ox
+    context.moveTo(0,0);
+    context.lineTo(rect.width,0);
+    //oy
+    context.moveTo(0,0);
+    context.lineTo(0,rect.height);
+
+    //zastosowanie współczynników skalujących
+    context.scale(scalex,scaley); //przeskalowanie
+
+    context.moveTo(0,0)
+    
+    context.translate(0,c);
+
+
+    context.lineWidth = 2/scalex;
+    
+    for(var x=0; x<20;x+=0.01){
+        context.lineTo(x,Math.sin(x)+0.5*x-5);
+    }
+    context.stroke();
+    context.restore();
+    
+    context.save();
+    context.translate(cs2.bx, cs2.by);
+    context.scale(cs.sx, cs.sy);
+    //rysowanie osi
+    context.beginPath();
+    context.lineWidth = 2;
+    context.strokeStyle = "black";
+
+    //ox
+    context.moveTo(0,0);
+    context.lineTo(rect.width,0);
+    //oy
+    context.moveTo(0,0);
+    context.lineTo(0,rect.height);
+    
+    for(var x=0; x<20;x+=0.01){
+        context.lineTo(x*10,(Math.sin(2*x)*Math.cos(3*x)+0.5*x-5)*10+c*10);
+    }
+    
+    
+    context.stroke();
+    context.restore();
+ 
+    //------------------------------------------------------
+    context.translate(0,220);
+    context.save();
+    //context.translate(0,220);
+    context.beginPath();
+    context.lineWidth = 2;
+    context.strokeStyle = "black";
+    
+    context.stroke();
+    
+    var last_time, stop, linear_speed=10;
+    var r = 10;
+    var x = 1;
+    var y = 1;
+    var oldDistance = 0;
+    var directionx = false;
+    var directiony = false;
+    var distance = 0;
+    
+    function InitAnimation(){
+        stop = false;
+        var date = new Date();
+        last_time = date.getTime();
+        
+        window.requestAnimationFrame(drawAnimation);
+    }
+    
+    function drawAnimation(){
+        
+        context.clearRect(0,0,200,200);
+        var date = new Date();
+        var time_interval = date.getTime() - last_time;
+        
+        oldDistance = distance;
+        
+        distance = linear_speed * time_interval / 100;
+        
+        var travel = distance-oldDistance;
+
+        if (x+r>=200-r){
+            directionx = true;
+        }
+        if (y+r>=200-r){
+            directiony = true;
+        }
+        if (x-r<=1-r){
+            directionx = false;
+        }
+        
+        if (y-r<=1-r){
+            directiony=false;
+        }
+        
+        if (directionx == false){
+            x+=travel;
+        }else{
+            x-=1;
+        }
+        
+        if (directiony == false){
+            y+=1;
+        }else{
+            y-=1;
+        }
+        
+        context.save();
+        
+        context.moveTo(0,0);
+        context.lineTo(200,0);
+        context.lineTo(200,200);
+        context.lineTo(0,200);
+        context.lineTo(0,0);
+        context.stroke();
+        context.restore();
+        
+        context.save();
+        context.beginPath();
+        
+        context.translate(x,y);
+        
+        context.arc(r,r,r,0,2*Math.PI);
+        
+        context.fillStyle = 'red';
+        context.fill();
+        
+        context.stroke();
+        context.restore();
+        
+        if (!stop) window.requestAnimationFrame(drawAnimation);
+        
+        //InitAnimation();
+    }
+    
+    InitAnimation();
+    //context.stroke();
+    context.restore();
+}
+
 
 function zmienKontrast(){
     // var styleLink = document.getElementById("style");
