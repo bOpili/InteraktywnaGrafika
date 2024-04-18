@@ -149,6 +149,94 @@ function canvas() {
 
 }
 
+function canvasMaster(){
+    canvas2();
+    canvas3();
+}
+
+function canvas3(){
+    var canvasAnim = document.getElementById("canvas3");
+    var context = canvasAnim.getContext("2d");
+
+ 
+    //------------------------------------------------------
+    //context.translate(0,220);
+    context.save();
+    //context.translate(0,220);
+    
+    
+    var last_time, stop, linear_speed=10;
+    var angle = 0;
+    var rad1 = 0;
+    var rad2 = 0;
+
+    var colors2 = Array ("#0000ff", "#ff0000", "#ffff00", "#00ff00");
+    var tab = Array(10,30,70,120);
+    var full = 0;
+    tab.forEach(element => {
+        full += element;
+    });
+
+    
+    
+
+    context.stroke();
+    
+    function InitAnimation(){
+        stop = false;
+        var date = new Date();
+        last_time = date.getTime();
+        context.moveTo(500,250)
+        
+        window.requestAnimationFrame(drawAnimation);
+    }
+    
+    function drawAnimation(){
+        
+        //context.clearRect(0,0,1000,500);
+        var date = new Date();
+        var time_interval = date.getTime() - last_time;
+        
+        context.moveTo(150,300);
+        context.rect(0,0,1000,500);
+        
+        //context.arc(150,300, 100, 0, 2*Math.PI, false);
+        context.stroke();
+        
+        angle = (linear_speed * time_interval / 100);
+        context.save();
+        context.beginPath();
+        
+        for (var i = 0; i<tab.length; i++){
+            context.beginPath();
+            rad2 = rad2 + angle*(tab[i]/full)*0.0174532925;
+            //console.log(tab[i]/full);
+            context.lineTo(500,250);
+            context.lineWidth = 2;
+            context.strokeStyle = colors2[i];
+            console.log(rad1 + " - " + rad2);
+            context.arc(500,250, 200, rad1, rad2, false);
+            context.strokeStyle = colors2[i]
+            context.fillStyle = colors2[i];
+            context.closePath();
+            context.fill();
+            
+        }
+        context.stroke();
+        context.restore();
+
+        if (angle>=360){
+            stop = true;
+        }
+        
+        if (!stop) window.requestAnimationFrame(drawAnimation);
+    }
+    
+    InitAnimation();
+    context.restore();
+
+}
+
 function canvas2(){
     //--------------------------------------------------------------------------
 
@@ -253,7 +341,7 @@ function canvas2(){
     
     function drawAnimation(){
         
-        context.clearRect(0,0,200,200);
+        context.clearRect(-5,-5,205,205);
         var date = new Date();
         var time_interval = date.getTime() - last_time;
         
