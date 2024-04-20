@@ -152,6 +152,119 @@ function canvas() {
 function canvasMaster(){
     canvas2();
     canvas3();
+    canvas4();
+}
+
+function canvas4(){
+    var canvasAnim = document.getElementById("canvas4");
+    var context = canvasAnim.getContext("2d");
+    
+    
+    context.globalCompositeOperation = "destination-over";
+    var dane_wykresu = {
+        serie: [ [ 10 , 30 , 45 , 24 , 79 ] , [ 24 , 15 , 33 , 34 , 50 ] ] ,
+        etykiety: [ "label1 " , "label2" , "label3" , "label4" , "label5" ] ,
+        tytul: "Animowany wykres słupkowy" ,
+        type: " wykres_slupkowy"
+    }
+    
+    var total1 = 0;
+    var total2 = 0;
+    
+    dane_wykresu.serie[0].forEach(el => total1+=el)
+    dane_wykresu.serie[1].forEach(el => total2+=el)
+    
+    var colors = ["red", "green", "blue", "yellow", "pink"];
+    
+    
+    var distance, last_time, stop, linear_speed=30;
+    var height = 0;
+    
+    function InitAnimation(){
+        stop = false;
+        var date = new Date();
+        last_time = date.getTime();
+        context.moveTo(500,250)
+        
+        window.requestAnimationFrame(drawAnimation);
+    }
+    
+    
+    function drawAnimation(){
+        
+        var date = new Date();
+        var time_interval = date.getTime() - last_time;
+        context.clearRect(0,0,1000,500);
+        context.beginPath();
+        context.moveTo(0,0);
+        context.rect(0,0,1000,500);
+        context.stroke();
+        
+        context.beginPath();
+        context.moveTo(50,450);
+        context.lineTo(950,450);
+        context.moveTo(50,450);
+        context.lineTo(50,50);
+        context.stroke();
+        
+        context.beginPath();
+        context.font = "20px Arial";
+        context.fillText(dane_wykresu.tytul,400,50);
+        context.stroke();
+        
+        context.save();
+        context.beginPath();
+        context.translate(30,300);
+        context.rotate(-Math.PI/2);
+        //context.scale(-1,1);
+        context.font = "20px Arial";
+        context.fillText(dane_wykresu.type,0,0);
+        
+        context.stroke();
+        context.restore();
+        
+        distance = (linear_speed * time_interval / 100);
+        
+        
+        context.save();
+        context.beginPath();
+        
+        
+        for(var i=0; i<dane_wykresu.serie[0].length;i++){
+            context.beginPath();
+            context.fillStyle = colors[i];
+            context.strokeStyle = colors[i];
+            context.moveTo(100,450);
+            context.rect(100,450,50,-distance*(dane_wykresu.serie[0][i]/100));
+            
+            
+            context.moveTo(170,450);
+            context.rect(170,450,50,-distance*(dane_wykresu.serie[1][i]/100));
+            context.fill();
+            context.fillStyle = "black";
+            context.fillText(dane_wykresu.etykiety[i],135,480);
+            
+            context.translate(170,0);
+            
+            
+            
+        }
+        
+        
+        //console.log(height);
+            
+        context.stroke();
+        context.restore();
+        
+        if(distance >= 400){
+            stop = true;
+        }
+        
+        if (!stop) window.requestAnimationFrame(drawAnimation);
+    }
+    
+    InitAnimation();
+    
 }
 
 function canvas3(){
@@ -160,15 +273,10 @@ function canvas3(){
 
  
     //------------------------------------------------------
-    //context.translate(0,220);
-    context.save();
-    //context.translate(0,220);
     
     
-    var last_time, stop, linear_speed=10;
+    var last_time, stop, linear_speed=300;
     var angle = 0;
-    var rad1 = 0;
-    var rad2 = 0;
 
     var colors2 = Array ("#0000ff", "#ff0000", "#ffff00", "#00ff00");
     var tab = Array(10,30,70,120);
@@ -180,7 +288,6 @@ function canvas3(){
     
     
 
-    context.stroke();
     
     function InitAnimation(){
         stop = false;
@@ -193,35 +300,55 @@ function canvas3(){
     
     function drawAnimation(){
         
-        //context.clearRect(0,0,1000,500);
         var date = new Date();
         var time_interval = date.getTime() - last_time;
+        context.clearRect(0,0,1000,500);
         
-        context.moveTo(150,300);
         context.rect(0,0,1000,500);
         
-        //context.arc(150,300, 100, 0, 2*Math.PI, false);
         context.stroke();
         
-        angle = (linear_speed * time_interval / 100);
+        angle = (linear_speed * time_interval / 1000);
         context.save();
-        context.beginPath();
         
-        for (var i = 0; i<tab.length; i++){
-            context.beginPath();
-            rad2 = rad2 + angle*(tab[i]/full)*0.0174532925;
-            //console.log(tab[i]/full);
-            context.lineTo(500,250);
-            context.lineWidth = 2;
-            context.strokeStyle = colors2[i];
-            console.log(rad1 + " - " + rad2);
-            context.arc(500,250, 200, rad1, rad2, false);
-            context.strokeStyle = colors2[i]
-            context.fillStyle = colors2[i];
-            context.closePath();
-            context.fill();
-            
-        }
+
+        context.beginPath();
+        context.moveTo(500,250);
+        context.globalCompositeOperation = "destination-over";
+        rad2 = angle*(tab[0]/full)* 0.0174532925;
+        context.arc(500,250,250,0,rad2);
+        var radPrev = rad2;
+        context.fillStyle = colors2[0];
+        context.fill();
+
+        
+        context.beginPath();
+        context.moveTo(500,250);
+        rad2 = angle*(tab[1]/full)* 0.0174532925;
+        context.arc(500,250,250,0,rad2+radPrev);
+        radPrev += rad2;
+        context.fillStyle = colors2[1];
+        context.fill();
+
+        
+        
+        context.beginPath();
+        context.moveTo(500,250);
+        rad2 = angle*(tab[2]/full)* 0.0174532925;
+        context.arc(500,250,250,0,rad2+radPrev);
+        radPrev += rad2;
+        context.fillStyle = colors2[2];
+        context.fill();
+
+        
+        context.beginPath();
+        context.moveTo(500,250);
+        rad2 = angle*(tab[3]/full)* 0.0174532925;
+        context.arc(500,250,250,0,rad2+radPrev);
+        context.fillStyle = colors2[3];
+        context.fill();
+        
+        
         context.stroke();
         context.restore();
 
