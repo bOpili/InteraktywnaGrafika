@@ -137,25 +137,65 @@ function canvas1(){
     var last_time = 0;
     var stop = false;
     var drawGameOver = false;
+    var win = false;
+    var points = 0;
+    var plansza = 0;
     var ball = {}; //obiekt piłka
     var area = {}; //obiekt obszar poruszania
     //Inicjalizacja stanu początkowego animacji
     
     brick = { width : 48 , height: 18,
         fillStyles: [ "green", "blue", "yellow", "red"] ,strokeStyle: " black " } ;
+    
         //fillStyles − koloryróżnych cegieł
         
         //Mapa klocków
-        bricks = [ [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
-        [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
-        [ 0 , 3 , 3 , 0 , 0 , 0 , 0 , 3 , 3 , 0 ] ,
-        [ 0 , 0 , 0 , 3 , 3 , 3 , 3 , 0 , 0 , 0 ] ,
-        [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
-        [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
-        [ 0 , 1 , 1 , 1 , 0 , 0 , 1 , 1 , 1 , 0 ] ,
-        [ 0 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 0 , 0 ] ,
-        [ 0 , 3 , 2 , 3 , 2 , 3 , 2 , 1 , 3 , 0 ] ,
-        [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ] ;
+        bricks3 = [ [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 3 , 3 , 0 , 0 , 0 , 0 , 3 , 3 , 0 ] ,
+                    [ 0 , 0 , 0 , 3 , 3 , 3 , 3 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 1 , 1 , 1 , 0 , 0 , 1 , 1 , 1 , 0 ] ,
+                    [ 0 , 0 , 2 , 2 , 2 , 2 , 2 , 2 , 0 , 0 ] ,
+                    [ 0 , 3 , 2 , 3 , 2 , 3 , 2 , 1 , 3 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ] ;
+        
+        bricks1 = [ [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 ] ,
+                    [ 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 ] ,
+                    [ 0 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 ] ,
+                    [ 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 1 , 1 , 1 , 1 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ] ;
+        
+        bricks2 = [ [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 1 , 0 , 1 , 0 , 0 , 1 , 0 , 1 , 0 ] ,
+                    [ 0 , 0 , 2 , 0 , 0 , 0 , 0 , 2 , 0 , 0 ] ,
+                    [ 0 , 1 , 0 , 1 , 0 , 0 , 1 , 0 , 1 , 0 ] ,
+                    [ 3 , 0 , 0 , 0 , 3 , 3 , 0 , 0 , 0 , 3 ] ,
+                    [ 0 , 3 , 3 , 3 , 0 , 0 , 3 , 3 , 3 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ] ;
+        
+        bricks4 = [ [ 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ] ,
+                    [ 0 , 2 , 0 , 2 , 0 , 2 , 0 , 2 , 0 , 2 ] ,
+                    [ 3 , 0 , 3 , 0 , 3 , 0 , 3 , 0 , 3 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 3 , 1 , 3 , 0 , 0 , 3 , 1 , 3 , 0 ] ,
+                    [ 0 , 1 , 2 , 1 , 0 , 0 , 1 , 2 , 1 , 0 ] ,
+                    [ 0 , 3 , 1 , 3 , 0 , 0 , 3 , 1 , 3 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ,
+                    [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ] ;
+        
+        
+        var bricks = [bricks1, bricks2, bricks3, bricks4];
     
     function InitAnimation(){
         var date = new Date();
@@ -209,6 +249,14 @@ function canvas1(){
         context.clearRect(0, 0, 500, 500);
         
         if(!drawGameOver){
+            win = true;
+            
+            context.save();
+            context.beginPath();
+            context.rect(0,0,500,500);
+            context.stroke();
+            context.restore();
+            
             // 3. wyznaczenie upływu czasu od ostatniej klatki
             var date = new Date();
             var currentTime = date.getTime();
@@ -262,40 +310,51 @@ function canvas1(){
             //Detekcja kolizji z cegiełką
             for (var i = 0; i < 10; i++){ //po szerokości okna
                 for (var j = 0; j < 10; j++){ //po wysokości
-                    if (bricks[j][i] > 0){ //to detekcja kolizji
+                    if (bricks[plansza][j][i] > 0){ //to detekcja kolizji
                         //wyznaczenie położenia każdej cegły
                         var brick_coords = {x: (i*(brick.width+2)), y: (j*(brick.height+2))};
-                        
-                        context.save();
-                        context.beginPath();
-                        context.arc(brick_coords.x, brick_coords.y, 10,0,2*Math.PI);
-                        context.stroke();
-                        context.restore();
+                        win = false;
                         //sprawdzenie warunków kolizji
                         if (brick_coords.x < ball.x+ball.r && ball.x-ball.r < brick_coords.x+brick.width && brick_coords.y < ball.y+ball.r && ball.y-ball.r < brick_coords.y+brick.height){
                             
                             ball.vy = -ball.vy;
-                            bricks[j][i] = bricks[j][i] - 1;
-                             
+                            bricks[plansza][j][i] = bricks[plansza][j][i] - 1;
+                            points +=1;
                         }
                     }
                 }
             }
             
+            if (win == true && plansza <= bricks.length-1){
+                plansza +=1;
+                ball = { x: 250, y: 300, r: 10, vx: 100, vy: -150 };
+            }
+            
+            if (win == true && plansza == bricks.length){
+                context.save();
+                context.clearRect(0, 0, 500, 500);
+                context.fillStyle = "black";
+                context.font = "50pt Calibri";
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+                context.fillText("Win!", area.width / 2.0, area.height / 2.0);
+                context.fillText("Score: "+points.toString(), area.width / 2.0, area.height / 2.0+60);
+                context.restore();
+                
+                context = null;
+            }
+            
+            
             // 4. Rysowanie obiektów (po wyznaczeniu stanu wszystkich obiektów)
             // 4.1. zapamiętanie stanu płótna
-            context.save();
-            context.beginPath();
-            context.rect(0,0,500,500);
-            context.stroke();
-            context.restore();
+            
             
             context.save();
                 for (var i=0; i<10; i++){
                     for (var j=0; j<10; j++){
-                        if(bricks[j][i] > 0){
+                        if(bricks[plansza][j][i] > 0){
                             context.beginPath();
-                            context.fillStyle = brick.fillStyles[bricks[j][i]];
+                            context.fillStyle = brick.fillStyles[bricks[plansza][j][i]];
                             context.fillRect(i*(brick.width+2),j*(brick.height + 2), brick.width, brick.height);
                             context.strokeRect(i*(brick.width+2),j*(brick.height + 2), brick.width, brick.height);
                             context.closePath();
@@ -313,6 +372,17 @@ function canvas1(){
             context.closePath();
             context.stroke();
             context.fill();
+            
+            context.save();
+            context.beginPath();
+            
+            context.fillStyle = "black";
+            context.font = "14pt Calibri";
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillText("Score: "+points.toString(), area.width-100 / 2.0, 20);
+            context.fillText("Level: "+(plansza+1).toString(), 100 / 2.0, 20);
+            context.restore();
             
             context.beginPath();
             context.fillStyle = plate.fillStyle;
@@ -332,6 +402,7 @@ function canvas1(){
             context.textAlign = "center";
             context.textBaseline = "middle";
             context.fillText("Game over", area.width / 2.0, area.height / 2.0);
+            context.fillText("Score: "+points.toString(), area.width / 2.0, area.height / 2.0+60);
             context.restore();
         }
         
