@@ -9,6 +9,10 @@
 <!-- <link href="styleHC.css" rel="stylesheet" type="text/css" /> -->
 <script src="jquery.min.js"></script>
 <script src="jquery.jqplot.min.js"></script>
+<script src='https://cdn.plot.ly/plotly-2.32.0.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
+<script src="jquery.csv.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
 <link rel="stylesheet" href="jquery.jqplot.min.css"/>
 <script src="script4.js"></script> 
 </head>
@@ -44,7 +48,9 @@
 	
 	<div id="page_content">
 	
-		<div id="chartdiv" style="height: 400px;width: 300px;"></div>
+		<div id="chartdiv" style="height: 500px;width: 500px;"></div>
+		<div id="chartdiv1" style="height: 500px;width: 500px;"></div>
+		<div id="chartdiv2" style="height: 500px;width: 500px;"></div>
 
 	</div>
 	<!-- -->
@@ -53,7 +59,7 @@
 		<div class="module">
 		<div class="module_title"></div>
 		  <div class="module_content">
-			
+			<button id="action">Download csv</button>
 		  </div>
 		</div>
 	</div>
